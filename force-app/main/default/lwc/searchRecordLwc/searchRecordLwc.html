@@ -1,0 +1,43 @@
+<template>
+    <lightning-layout class="slds-var-p-around_small" horizontal-align="spread">
+        <lightning-layout-item size="6">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <div class="slds-combobox_container">
+                        <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
+                            aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                                role="none">
+                                <lightning-input type="text" label="Contact Person" placeholder="Search Contacts..." value={searchText}
+                                    onchange={triggerSearch}>
+                                </lightning-input>
+                            </div> 
+                            <template if:true={hasResults}>
+                                <div class="slds-dropdown slds-dropdown_length-5" role="listbox">
+                                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                        <template for:each={searchResults} for:item="result">
+                                            <li key={result.RecordId} role="presentation" class="slds-listbox__item"
+                                                data-value={result.RecordId} onclick={onResultChanged}>
+                                                <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                    role="option">
+                                                    <span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                    <span class="slds-media__body">
+                                                        <span class="slds-truncate"
+                                                            title="Groups">{result.RecordName}</span>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+
+                            </template>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+
+</template>

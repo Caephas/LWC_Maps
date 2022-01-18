@@ -1,0 +1,116 @@
+<!-- This file contains all the necessary code  required to 
+            create a new Referral source frontend -->
+
+
+<template>
+    <h3 class="slds-section__title slds-theme_info">
+        <span class="slds-truncate slds-var-p-horizontal_small" title="Section Title">Information</span>
+    </h3>
+    <lightning-card>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input label="Referral Source Name" type="text" required="true" name="Name" value={Name}>
+                </lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout multiple-rows="false">
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input label="Total Expenses" type="text" name="Total_Expenses__c" value={Total_Expenses__c}>
+                </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input label="Number of Referrals - Total" type="text" name="Number_of_Referrals_Total__c"
+                    value={Number_of_Referrals_Total__c}>
+                </lightning-input>
+            </lightning-layout-item>
+
+
+            <lightning-layout-item>
+                <c-search-record-lwc object-api-name="Contact" onrecordselected={handleRecordSelected}>
+                </c-search-record-lwc>
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input label="Number of Activities - Last 30 days" type="text"
+                    name="Number_of_Activities_Last_30_days__c" value={Number_of_Activities_Last_30_days__c}>
+                </lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+    <h3 class="slds-section__title slds-theme_info">
+        <span class="slds-truncate slds-var-p-horizontal_small" title="Section Title">Referral Information</span>
+    </h3>
+    <lightning-card>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input label="Number of Accepted Referrals" type="text" name="Name" value={Name}>
+                </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input label="Number of Referrals Since 3/1" type="text" name="Name" value={Name}>
+                </lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="2" padding="around-small">
+                <lightning-input label="Date of Most Recent Referral" type="date"
+                    name=" Date_of_Most_Recent_Referral__c " value={Date_of_Most_Recent_Referral__c}>
+                </lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+    <h3 class="slds-section__title slds-theme_info">
+        <span class="slds-truncate slds-var-p-horizontal_small" title="Section Title">Contact Card_Superceded</span>
+    </h3>
+    <lightning-card>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input label="Contact Person Phone" type="text" name="Contact_Person_Phone__c"
+                    value={Contact_Person_Phone__c}>
+                </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input label="Contact Person Fax Number" type="text" name="Contact_Person_Fax_Number__c"
+                    value={Contact_Person_Fax_Number__c}>
+                </lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout>
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input label="Contact Person Email" type="text" name="Contact_Person_Email__c"
+                    value={Contact_Person_Email__c}>
+                </lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+    <h3 class="slds-section__title slds-theme_info">
+        <span class="slds-truncate slds-var-p-horizontal_small" title="Section Title">Admin Information</span>
+    </h3>
+    <lightning-card>
+        <lightning-layout>
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input label="Ownership" type="picklist" name="Ownership__c" value={Ownership__c}>
+                </lightning-input>
+                <lightning-input label="Marketers from Referrals" type="textArea" name="Marketers_from_Referrals__c"
+                    value={Marketers_from_Referrals__c}>
+                </lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+    <lightning-card>
+        <lightning-input autocomplete="true" placeholder="Search Address" onchange={handleSearchAddress}></lightning-input>
+        <lightning-input-address address-label="Address" city={addressInfo.city} city-label="City"
+            country-label="Country" country={addressInfo.country} street={addressInfo.street} street-label="Street"
+            province-label="Province/State" province={addressInfo.state} postal-code-label="Postal Code"
+            postal-code={addressInfo.zip} onchange={handleChangeAddress}>
+        </lightning-input-address>
+       
+        <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
+       
+
+    </lightning-card>
+
+
+</template>
