@@ -100,21 +100,38 @@
         </lightning-layout>
     </lightning-card>
     <lightning-card>
-        <lightning-input autocomplete="true" placeholder="Search Address" onchange={handleSearchAddress}>
+        <!--  TODO : REPLICATE STYLE FROM SEARCH RECORD LWC HERE  -->
+        <lightning-input label="Address Search" placeholder="Search Address" value={addressSearchInput}
+            onchange={handleSearchAddress}>
         </lightning-input>
-        <lightning-combobox
-            name="progress"
-            value={value}
-            options={options}
-            onchange={handleChange} 
-            ></lightning-combobox>
-    
+        <template if:true={displayPredictions}>
+            <lightning-combobox name="predictions" options={addressPredictions} onchange={handleChangePrediction}>
+            </lightning-combobox>
+        </template>
+        <!--  TODO : REPLICATE STYLE FROM SEARCH RECORD LWC HERE  -->
 
-        <lightning-input-address address-label="Address" city={addressInfo.city} city-label="City"
-            country-label="Country" country={addressInfo.country} street={addressInfo.street} street-label="Street"
-            province-label="Province/State" province={addressInfo.state} postal-code-label="Postal Code"
-            postal-code={addressInfo.zip} onchange={handleChangeAddress}>
-        </lightning-input-address>
+
+        <!-- TODO : display this only if the user wants the address input to be  GEOCODE, [DONE]    -->
+        <template if:true={addressIsGeocode}>
+            <lightning-input type="number" name="longitude" label="Longitude" value={addressInfoGeocode.lng}>
+            </lightning-input>
+            <lightning-input type="number" name="latitude" label="Latitude" value={addressInfoGeocode.lat}>
+            </lightning-input>
+        </template>
+
+
+        <!-- TODO : display this only if the user wants the address input to be standard address input, [DONE]   -->
+        <template if:false={addressIsGeocode}>
+            <lightning-input-address address-label="Address" city={addressInfo.city} city-label="City"
+                country-label="Country" country={addressInfo.country} street={addressInfo.street} street-label="Street"
+                province-label="Province/State" province={addressInfo.state} postal-code-label="Postal Code"
+                postal-code={addressInfo.zip} onchange={handleChangeAddress}>
+            </lightning-input-address>
+        </template>
+
+
+
+
 
         <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
 

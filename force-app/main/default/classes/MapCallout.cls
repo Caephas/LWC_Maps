@@ -53,4 +53,23 @@ public class MapCallout {
             return response;
         }
 
+    
+    @AuraEnabled
+    public static string GetLocationForAddress(string address){
+        string modifiedAddress = address.replaceAll(' ', '+').remove(',');
+        try {
+            HttpRequest request = new HttpRequest();
+            request.setEndpoint('https://maps.googleapis.com/maps/api/geocode/json?address='+modifiedAddress+'&key=AIzaSyC6XvLeyFoXx--aNwexPJhQm9l8ZulhzVs');
+            request.setMethod('GET');
+            HttpResponse httpresponse = http.send(request);
+
+            system.debug(httpresponse.getBody());
+            return httpresponse.getBody();
+
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }    
+
+
 }

@@ -30,38 +30,67 @@ export default class ReferralSourceNew extends LightningElement {
     Ownership__c = OWNERSHIP
     Marketers_from_Referrals__c = MARKETERSFROMREFERRALS
 
+    addressSearchInput = "";
+    addressIsGeocode = false;
+
+    @track
+    addressPredictions = [];
+
+    get displayPredictions() {
+        return this.addressPredictions.length > 0;
+    }
+
+
+
     @track
     addressInfo = {
-        country: "",
-        city: "",
+        country: "USA",
+        city: "New Jersey",
         street: "",
         state: "",
         zip: ""
     }
 
-    get mapAddressInfo() {
-        const info = { ...this.addressInfo };
-
-        return {
-            location: {
-                City: info.country,
-                Country: info.country,
-                PostalCode: info.zip,
-                State: info.state,
-                Street: info.street,
-            }
-        }
+    @track
+    addressInfoGeocode = {
+        lng: -55.722656,
+        lat: 9.855216
     }
 
+    get mapAddressInfo() {
+        if (!this.addressIsGeocode) {
+            const info = { ...this.addressInfo };
+
+            return {
+                location: {
+                    City: info.country,
+                    Country: info.country,
+                    PostalCode: info.zip,
+                    State: info.state,
+                    Street: info.street,
+                }
+            }
+        } else {
+            const geocodeInfo = { ...this.addressInfoGeocode };
+            return {
+                location: {
+                    Latitude: geocodeInfo.lat,
+                    Longitude: geocodeInfo.lng
+                }
+            }
+        }
+
+
+    }
+
+    // what does this do ?? 
     handleRecordSelected(event) {
         let selectedRecordId = event.detail.recordId;
 
     }
 
     handleChangeAddress(event) {
-
         const detail = { ...event.detail };
-        console.log('address is changed !!! ', detail)
         let { country, city, street, province, postalCode } = detail;
         this.addressInfo.country = country;
         this.addressInfo.city = city;
@@ -72,22 +101,37 @@ export default class ReferralSourceNew extends LightningElement {
 
     handleSearchAddress(event) {
         getAutoComplete({ input: event.detail.value })
-            .then(res => console.log(res))
-            .catch(error => console.error(error));
+            .then(res => {
+                if (res.status === 1) {
+
+                    let addressPreds = [...res.predicted_addresses];
+                    let index = 0;
+                    let optionsMap = [];
+                    for (let pred of addressPreds) {
+                        optionsMap = [...optionsMap, {
+                            key: index,
+                            label: pred,
+                            value: pred
+                        }]
+
+                        index += 1;
+                    }
+                    this.addressPredictions = optionsMap;
+                } else {
+                    this.addressPredictions = [];
+                }
+            })
+            .catch(error => console.error('an exception was caught ==> ', error));
 
     }
-    value = 'inProgress';
-//I KNOW I AM SUPPOSED TO PASS SOMETHING HERE BUT I DONT KNOW HOW 
-    get options() {
-        return [
-            { label: 'New', value: 'new' },
-            { label: 'In Progress', value: 'inProgress' },
-            { label: 'Finished', value: 'finished' },
-        ];
-    }
 
-    handleChange(event) {
-        this.value = event.detail.value;
+
+    handleChangePrediction(event) {
+        console.log('selected address =>', event.detail.value);
+        this.addressPredictions = [];
+        this.addressSearchInput = "";
+        this.addressIsGeocode = true;
+
     }
 
 
