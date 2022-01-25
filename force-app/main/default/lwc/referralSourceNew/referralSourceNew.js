@@ -32,10 +32,10 @@ export default class ReferralSourceNew extends LightningElement {
 
     @track
     addressInfo = {
-        country: "USA",
+        country: "",
         city: "",
         street: "",
-        state: "New York",
+        state: "",
         zip: ""
     }
 
@@ -70,13 +70,23 @@ export default class ReferralSourceNew extends LightningElement {
         this.addressInfo.street = street;
     }
 
-    handleSearchAddress(event){
-        getAutoComplete({input: event.detail.value})
-        .then(res => console.log(res))
-        .catch(error => console.error(error));
-       
-    
+    handleSearchAddress(event) {
+        getAutoComplete({ input: event.detail.value })
+            .then(res => console.log(res))
+            .catch(error => console.error(error));
+
     }
-    
-  
+    value = getAutoComplete;
+
+    get options() {
+        return [
+           this.value
+        ];
+    }
+
+    handleChange(event) {
+        this.value = event.detail.value;
+    }
+
+
 }

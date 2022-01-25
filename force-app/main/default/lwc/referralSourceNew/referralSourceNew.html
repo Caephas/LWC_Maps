@@ -100,18 +100,26 @@
         </lightning-layout>
     </lightning-card>
     <lightning-card>
-        <lightning-input autocomplete="true" placeholder="Search Address" onchange={handleSearchAddress}></lightning-input>
-        
+        <lightning-input autocomplete="true" placeholder="Search Address" onchange={handleSearchAddress}>
+        </lightning-input>
+        <lightning-combobox
+            name="progress"
+            value={value}
+            options={options}
+            onchange={handleChange} 
+            ></lightning-combobox>
+    
+
         <lightning-input-address address-label="Address" city={addressInfo.city} city-label="City"
             country-label="Country" country={addressInfo.country} street={addressInfo.street} street-label="Street"
             province-label="Province/State" province={addressInfo.state} postal-code-label="Postal Code"
             postal-code={addressInfo.zip} onchange={handleChangeAddress}>
         </lightning-input-address>
-       
+
         <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
-       
-        
-    </lightning-card> 
+
+
+    </lightning-card>
 
 
 </template>
