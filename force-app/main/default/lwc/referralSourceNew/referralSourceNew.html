@@ -9,7 +9,7 @@
     <lightning-card>
         <lightning-layout multiple-rows="true">
             <lightning-layout-item size="4" padding="around-small">
-                <lightning-input label="Referral Source Name" type="text" required="true" name="Name" value={Name}>
+                <lightning-input label="Referral Source Name" type="text" required name="Name" value={Name}>
                 </lightning-input>
             </lightning-layout-item>
         </lightning-layout>
@@ -101,6 +101,7 @@
     </lightning-card>
     <lightning-card>
         <lightning-input autocomplete="true" placeholder="Search Address" onchange={handleSearchAddress}></lightning-input>
+        
         <lightning-input-address address-label="Address" city={addressInfo.city} city-label="City"
             country-label="Country" country={addressInfo.country} street={addressInfo.street} street-label="Street"
             province-label="Province/State" province={addressInfo.state} postal-code-label="Postal Code"
@@ -109,8 +110,8 @@
        
         <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
        
-
-    </lightning-card>
+        
+    </lightning-card> 
 
 
 </template>

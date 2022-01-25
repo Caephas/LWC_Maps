@@ -12,9 +12,7 @@ import CONTACTPERSONFAXNUMBER from '@salesforce/schema/Referral_Source__c.Contac
 import CONTACTPERSONEMAIL from '@salesforce/schema/Referral_Source__c.Contact_Person_Email__c'
 import OWNERSHIP from '@salesforce/schema/Referral_Source__c.Ownership__c'
 import MARKETERSFROMREFERRALS from '@salesforce/schema/Referral_Source__c.Marketers_from_Referrals__c'
-
-
-const src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyC6XvLeyFoXx--aNwexPJhQm9l8ZulhzVs&libraries=places&callback=initMap"
+import getAutoComplete from '@salesforce/apex/MapCallout.getAutoComplete'
 
 export default class ReferralSourceNew extends LightningElement {
     //assigning required fields 
@@ -72,20 +70,12 @@ export default class ReferralSourceNew extends LightningElement {
         this.addressInfo.street = street;
     }
 
-    handleSearchAddress = async () => {
-        const response = await fetch(
-            "https://api.publicapis.org/entries",
-            {
-                // Request type
-                method: "GET",
-                headers: {
-                    "mode": "no-cors",
-                    // "Access-Control-Allow-Origin": 'http://127.0.0.1',
-                    "Accept": "application/json",
-                    // "Access-Control-Allow-Headers": 'Content-Type, Authorization'
-                }
-            }
-        )
+    handleSearchAddress(event){
+        getAutoComplete({input: event.detail.value}).
+        then(res => console.log(res)).catch(error => console.error(error));
+       
+    
     }
-
+    
+  
 }
