@@ -76,11 +76,13 @@ export default class ReferralSourceNew extends LightningElement {
             .catch(error => console.error(error));
 
     }
-    value = getAutoComplete;
-
+    value = 'inProgress';
+//I KNOW I AM SUPPOSED TO PASS SOMETHING HERE BUT I DONT KNOW HOW 
     get options() {
         return [
-           this.value
+            { label: 'New', value: 'new' },
+            { label: 'In Progress', value: 'inProgress' },
+            { label: 'Finished', value: 'finished' },
         ];
     }
 
