@@ -71,8 +71,9 @@ export default class ReferralSourceNew extends LightningElement {
     }
 
     handleSearchAddress(event){
-        getAutoComplete({input: event.detail.value}).
-        then(res => console.log(res)).catch(error => console.error(error));
+        getAutoComplete({input: event.detail.value})
+        .then(res => console.log(res))
+        .catch(error => console.error(error));
        
     
     }

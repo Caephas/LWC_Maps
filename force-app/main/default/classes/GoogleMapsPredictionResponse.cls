@@ -1,36 +1,46 @@
+/**
+ * Representing a namespace !!!!
+ *  datatype variablename = variableValue;
+ */
 public with sharing class GoogleMapsPredictionResponse {
 
-    public class PlacesAutocompleteResponse{
-        public PlaceAutocompletePrediction predictions{get;set;}
+    public class PlacesAutocompleteResponse {
+        public List<PlaceAutocompletePrediction> predictions{get;set;}
         public PlacesAutocompleteStatus status {get;set;}
-        String error_message;
-        String [] info_messages = new List<String>();
+        public string error_message {get;set;}
+        public string[] info_messages {get;set;}
     }    
+    
+    
+    public enum PlacesAutocompleteStatus {OK,ZERO_RESULTS,INVALID_REQUEST,OVER_QUERY_LIMIT,REQUEST_DENIED,UNKNOWN_ERROR}
+    
+    
     public class PlaceAutocompletePrediction{
-        String description;
-       public PlaceAutocompleteMatchedSubstring matched_substrings{get;set;}
+       public string description {get;set;}
+       public List<PlaceAutocompleteMatchedSubstring> matched_substrings{get;set;}
        public PlaceAutocompleteStructuredFormat structured_formatting{get;set;}
-       public  PlaceAutoCompleteTerm terms {get;set;}
-        String place_id; 
-        String reference;
-        String [] types = new List<String>();
+       public List<PlaceAutoCompleteTerm> terms {get;set;}
+       public string place_id {get;set;} 
+       public string[] types {get;set;}
     }
-    public class PlacesAutocompleteStatus { 
-
+    
+   
+    public class PlaceAutocompleteMatchedSubstring{
+        public  integer length {get;set;}
+        public  integer offset {get;set;}
     }
-   public class PlaceAutocompleteMatchedSubstring{
-       Integer length;
-        Integer offset;
-   }
-   public class PlaceAutocompleteStructuredFormat{
-       String main_text;
-       public PlaceAutocompleteMatchedSubstring main_text_matched_substrings {get;set;}
-       String secondary_text;
-       public PlaceAutocompleteMatchedSubstring secondary_text_matched_substrings{get;set;}
-   }
+   
+    public class PlaceAutocompleteStructuredFormat{
+       public string main_text{get;set;}
+       public List<PlaceAutocompleteMatchedSubstring> main_text_matched_substrings {get;set;}
+       public string secondary_text {get;set;}
+       public List<PlaceAutocompleteMatchedSubstring> secondary_text_matched_substrings{get;set;}
+   
+    }
+    
     public class PlaceAutocompleteTerm{
-        Integer offset;
-        String value;
+        public integer offset {get;set;}
+        public string value {get;set;}
     }
 
 }
