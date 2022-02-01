@@ -9,7 +9,7 @@ public class MapCallout {
         LwcControllerAutoCompleteResponse response = new LwcControllerAutoCompleteResponse();
         string encodedInput = EncodingUtil.urlEncode(input, 'UTF-8');
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+encodedInput+'&key=AIzaSyC6XvLeyFoXx--aNwexPJhQm9l8ZulhzVs');
+        request.setEndpoint('https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+encodedInput+'&key=AIzaSyC6XvLeyFoXx--aNwexPJhQm9l8ZulhzVs&location=37.0902%2C-95.7129&radius=200000');
         request.setMethod('GET');
         HttpResponse httpresponse = http.send(request);
         
@@ -27,7 +27,9 @@ public class MapCallout {
                     if(parsedResponse.predictions.size() > 0 ){
                         for(GoogleMapsPredictionResponse.PlaceAutocompletePrediction prediction : parsedResponse.predictions){
                             response.status = 1;
-                            response.predicted_addresses.add(prediction.description);
+                            if(prediction.description.containsIgnoreCase('Usa')){
+                                response.predicted_addresses.add(prediction.description);
+                            }
                         }
                     }
                 }
