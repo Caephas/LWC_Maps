@@ -100,14 +100,44 @@
         </lightning-layout>
     </lightning-card>
     <lightning-card>
-        <!--  TODO : REPLICATE STYLE FROM SEARCH RECORD LWC HERE  -->
-        <lightning-input label="Address Search" placeholder="Search Address" value={addressSearchInput}
-            onchange={handleSearchAddress}>
-        </lightning-input>
-        <template if:true={displayPredictions}>
-            <lightning-combobox name="predictions" options={addressPredictions} onchange={handleChangePrediction}>
-            </lightning-combobox>
-        </template>
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <div class="slds-combobox_container">
+                    <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
+                        aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                            role="none">
+                            <!--  TODO : REPLICATE STYLE FROM SEARCH RECORD LWC HERE  -->
+                            <lightning-input label="Address Search" placeholder="Search Address"
+                                value={addressSearchInput} onchange={handleSearchAddress}>
+                            </lightning-input>
+                        </div>
+                        <template if:true={displayPredictions}>
+                            <div class="slds-dropdown slds-dropdown_length-5" role="listbox">
+                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                    <template for:each={addressPredictions} for:item="result">
+                                        <li key={result.key} role="presentation" class="slds-listbox__item"
+                                            data-value={result.value} onclick={handleChangePrediction}>
+                                            <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                role="option">
+                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                <span class="slds-media__body">
+                                                    <span class="slds-truncate" title="Groups">{result.label}</span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                            <!-- 
+                            <lightning-combobox name="predictions" options={addressPredictions} onchange={handleChangePrediction}>
+                            </lightning-combobox> -->
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!--  TODO : REPLICATE STYLE FROM SEARCH RECORD LWC HERE  -->
 
 
