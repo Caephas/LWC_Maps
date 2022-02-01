@@ -7,9 +7,9 @@ public class MapCallout {
     public static LwcControllerAutoCompleteResponse getAutoComplete(String input){
 
         LwcControllerAutoCompleteResponse response = new LwcControllerAutoCompleteResponse();
-
+        string encodedInput = EncodingUtil.urlEncode(input, 'UTF-8');
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+input.trim()+'&key=AIzaSyC6XvLeyFoXx--aNwexPJhQm9l8ZulhzVs');
+        request.setEndpoint('https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+encodedInput+'&key=AIzaSyC6XvLeyFoXx--aNwexPJhQm9l8ZulhzVs');
         request.setMethod('GET');
         HttpResponse httpresponse = http.send(request);
         
