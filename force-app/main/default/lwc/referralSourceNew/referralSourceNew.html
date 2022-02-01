@@ -25,10 +25,10 @@
             </lightning-layout-item>
 
 
-            <lightning-layout-item>
+            <!-- <lightning-layout-item>
                 <c-search-record-lwc object-api-name="Contact" onrecordselected={handleRecordSelected}>
                 </c-search-record-lwc>
-            </lightning-layout-item>
+            </lightning-layout-item> -->
         </lightning-layout>
 
         <lightning-layout multiple-rows="true">
@@ -107,31 +107,40 @@
                         aria-expanded="true" aria-haspopup="listbox" role="combobox">
                         <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
                             role="none">
+                            
                             <!--  TODO : REPLICATE STYLE FROM SEARCH RECORD LWC HERE  -->
                             <lightning-input label="Address Search" placeholder="Search Address"
                                 value={addressSearchInput} onchange={handleSearchAddress}>
                             </lightning-input>
                         </div>
                         <template if:true={displayPredictions}>
-                            <div class="slds-dropdown slds-dropdown_length-5" role="listbox">
-                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
-                                    <template for:each={addressPredictions} for:item="result">
-                                        <li key={result.key} role="presentation" class="slds-listbox__item"
-                                            data-value={result.value} onclick={handleChangePrediction}>
-                                            <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
-                                                role="option">
-                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                <span class="slds-media__body">
-                                                    <span class="slds-truncate" title="Groups">{result.label}</span>
-                                                </span>
+                            <lightning-card>
+                                <lightning-layout>
+                                    <lightning-layout-item>
+                                        <div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_large"
+                                            role="listbox">
+                                            <div id="main_navigation">
+                                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                                    <template for:each={addressPredictions} for:item="result">
+                                                        <li key={result.key} role="presentation" class="slds-listbox__item"
+                                                            data-value={result.value} onclick={handleChangePrediction}>
+                                                            <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                                role="option">
+                                                                <span
+                                                                    class="slds-media__figure slds-listbox__option-icon"></span>
+                                                                <span class="slds-media__body">
+                                                                    <span class="slds-truncate"
+                                                                        title="Groups">{result.label}</span>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                    </template>
+                                                </ul>
                                             </div>
-                                        </li>
-                                    </template>
-                                </ul>
-                            </div>
-                            <!-- 
-                            <lightning-combobox name="predictions" options={addressPredictions} onchange={handleChangePrediction}>
-                            </lightning-combobox> -->
+                                        </div>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </lightning-card>
                         </template>
                     </div>
                 </div>
