@@ -10,7 +10,7 @@ public with sharing class SearchRecordLwcController {
             if(response != null && response.size() >0){
                 System.debug(response[0].size());
                 List<Sobject> records = response[0];
-                if(records != null && records.size() >0){
+                if(records != null && records.size() >0){ 
                     for(Sobject rec : records){
                         RecordSearchResponse res = new RecordSearchResponse();
                         res.RecordId = (String)rec.get('Id');
