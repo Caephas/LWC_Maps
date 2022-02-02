@@ -99,80 +99,80 @@
             </lightning-layout-item>
         </lightning-layout>
     </lightning-card>
+   
     <lightning-card>
-        <div class="slds-form-element">
-            <div class="slds-form-element__control">
-                <div class="slds-combobox_container">
-                    <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
-                        aria-expanded="true" aria-haspopup="listbox" role="combobox">
-                        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
-                            role="none">
-                            
-                            <!--  TODO : REPLICATE STYLE FROM SEARCH RECORD LWC HERE  -->
-                            <lightning-input label="Address Search" placeholder="Search Address"
-                                value={addressSearchInput} onchange={handleSearchAddress}>
-                            </lightning-input>
-                        </div>
-                        <template if:true={displayPredictions}>
-                            <lightning-card>
-                                <lightning-layout>
-                                    <lightning-layout-item>
-                                        <div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_large"
-                                            role="listbox">
-                                            <div id="main_navigation">
-                                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
-                                                    <template for:each={addressPredictions} for:item="result">
-                                                        <li key={result.key} role="presentation" class="slds-listbox__item"
-                                                            data-value={result.value} onclick={handleChangePrediction}>
-                                                            <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
-                                                                role="option">
-                                                                <span
-                                                                    class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                <span class="slds-media__body">
-                                                                    <span class="slds-truncate"
-                                                                        title="Groups">{result.label}</span>
-                                                                </span>
-                                                            </div>
-                                                        </li>
-                                                    </template>
-                                                </ul>
-                                            </div>
+         
+        <!--  TODO : @Arinze resize the lightning layout items using the size property !!!!  -->
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="4">
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                        <div class="slds-combobox_container">
+                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
+                                aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                                    role="none">
+
+                                    <!--  TODO : REPLICATE STYLE FROM SEARCH RECORD LWC HERE  -->
+                                    <lightning-input label="Address Search" placeholder="Search Address"
+                                        value={addressSearchInput} onchange={handleSearchAddress}>
+                                    </lightning-input>
+                                </div>
+                                <template if:true={displayPredictions}>
+                                    <div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_large"
+                                        role="listbox">
+                                        <div id="main_navigation">
+                                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                                <template for:each={addressPredictions} for:item="result">
+                                                    <li key={result.key} role="presentation" class="slds-listbox__item"
+                                                        data-value={result.value} onclick={handleChangePrediction}>
+                                                        <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                            role="option">
+                                                            <span
+                                                                class="slds-media__figure slds-listbox__option-icon"></span>
+                                                            <span class="slds-media__body">
+                                                                <span class="slds-truncate"
+                                                                    title="Groups">{result.label}</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
                                         </div>
-                                    </lightning-layout-item>
-                                </lightning-layout>
-                            </lightning-card>
-                        </template>
+                                    </div>
+
+
+                                </template>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </lightning-layout-item>
 
-        <!--  TODO : REPLICATE STYLE FROM SEARCH RECORD LWC HERE  -->
+            <lightning-layout-item size="8">
+                <lightning-input-address address-label="Address" city={addressInfo.city} city-label="City"
+                    country-label="Country" country={addressInfo.country} street={addressInfo.street}
+                    street-label="Street" province-label="Province/State" province={addressInfo.state}
+                    postal-code-label="Postal Code" postal-code={addressInfo.zip} onchange={handleChangeAddress}>
+                </lightning-input-address>
+            </lightning-layout-item>
+        </lightning-layout>
 
 
-        <!-- TODO : display this only if the user wants the address input to be  GEOCODE, [DONE]    -->
-        <template if:true={addressIsGeocode}>
+
+        <!-- <template if:true={addressIsGeocode}>
             <lightning-input type="number" name="longitude" label="Longitude" value={addressInfoGeocode.lng}>
             </lightning-input>
             <lightning-input type="number" name="latitude" label="Latitude" value={addressInfoGeocode.lat}>
             </lightning-input>
-        </template>
+        </template> -->
 
 
-        <!-- TODO : display this only if the user wants the address input to be standard address input, [DONE]   -->
-        <template if:false={addressIsGeocode}>
-            <lightning-input-address address-label="Address" city={addressInfo.city} city-label="City"
-                country-label="Country" country={addressInfo.country} street={addressInfo.street} street-label="Street"
-                province-label="Province/State" province={addressInfo.state} postal-code-label="Postal Code"
-                postal-code={addressInfo.zip} onchange={handleChangeAddress}>
-            </lightning-input-address>
-        </template>
+       
+        <lightning-layout-item>
+            <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
+        </lightning-layout-item>
 
-
-
-
-
-        <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
 
 
     </lightning-card>

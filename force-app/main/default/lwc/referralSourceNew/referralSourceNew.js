@@ -127,10 +127,17 @@ export default class ReferralSourceNew extends LightningElement {
 
 
     handleChangePrediction(event) {
-        console.log('selected address =>', event.detail.value);
+        const address = event.currentTarget.dataset.value;
+        console.log('selected address =>', address);
+        let splitAddresses = address.split(',');
+        console.log(splitAddresses);
+        this.addressInfo.street =splitAddresses[0].trim();
+        this.addressInfo.city = splitAddresses[1].trim();
+        this.addressInfo.state = splitAddresses[2].trim();
+        
         this.addressPredictions = [];
         this.addressSearchInput = "";
-        this.addressIsGeocode = true;
+        //this.addressIsGeocode = true;
 
     }
 
