@@ -44,8 +44,8 @@ export default class ReferralSourceNew extends LightningElement {
 
     @track
     addressInfo = {
-        country: "USA",
-        city: "New Jersey",
+        country: "",
+        city: "",
         street: "",
         state: "",
         zip: ""

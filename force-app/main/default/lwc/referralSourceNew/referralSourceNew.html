@@ -3,7 +3,7 @@
 
 
 <template>
-    <h3 class="slds-section__title slds-theme_info">
+    <h3 class="slds-section__title slds-theme_info" style="background-color:DodgerBlue;">
         <span class="slds-truncate slds-var-p-horizontal_small" title="Section Title">Information</span>
     </h3>
     <lightning-card>
@@ -39,7 +39,7 @@
             </lightning-layout-item>
         </lightning-layout>
     </lightning-card>
-    <h3 class="slds-section__title slds-theme_info">
+    <h3 class="slds-section__title slds-theme_info" style="background-color:DodgerBlue;">
         <span class="slds-truncate slds-var-p-horizontal_small" title="Section Title">Referral Information</span>
     </h3>
     <lightning-card>
@@ -61,7 +61,7 @@
             </lightning-layout-item>
         </lightning-layout>
     </lightning-card>
-    <h3 class="slds-section__title slds-theme_info">
+    <h3 class="slds-section__title slds-theme_info" style="background-color:DodgerBlue;">
         <span class="slds-truncate slds-var-p-horizontal_small" title="Section Title">Contact Card_Superceded</span>
     </h3>
     <lightning-card>
@@ -85,7 +85,7 @@
             </lightning-layout-item>
         </lightning-layout>
     </lightning-card>
-    <h3 class="slds-section__title slds-theme_info">
+    <h3 class="slds-section__title slds-theme_info" style="background-color:DodgerBlue;">
         <span class="slds-truncate slds-var-p-horizontal_small" title="Section Title">Admin Information</span>
     </h3>
     <lightning-card>
@@ -99,12 +99,16 @@
             </lightning-layout-item>
         </lightning-layout>
     </lightning-card>
-   
+    <h3 class="slds-section__title slds-theme_info" style="background-color:DodgerBlue;">
+        <span class="slds-truncate slds-var-p-horizontal_small" title="Section Title">Address Information</span>
+    </h3>
+    <!--  TODO : @Arinze resize the lightning layout items using the size property !!!!  -->
     <lightning-card>
-         
-        <!--  TODO : @Arinze resize the lightning layout items using the size property !!!!  -->
+        <lightning-input label="Address Search" placeholder="Search Address" value={addressSearchInput}
+            onchange={handleSearchAddress}>
+        </lightning-input>
         <lightning-layout multiple-rows="true">
-            <lightning-layout-item size="4">
+            <lightning-layout-item size="4" flexibility="auto">
                 <div class="slds-form-element">
                     <div class="slds-form-element__control">
                         <div class="slds-combobox_container">
@@ -112,11 +116,6 @@
                                 aria-expanded="true" aria-haspopup="listbox" role="combobox">
                                 <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
                                     role="none">
-
-                                    <!--  TODO : REPLICATE STYLE FROM SEARCH RECORD LWC HERE  -->
-                                    <lightning-input label="Address Search" placeholder="Search Address"
-                                        value={addressSearchInput} onchange={handleSearchAddress}>
-                                    </lightning-input>
                                 </div>
                                 <template if:true={displayPredictions}>
                                     <div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_large"
@@ -140,42 +139,25 @@
                                             </ul>
                                         </div>
                                     </div>
-
-
                                 </template>
                             </div>
                         </div>
                     </div>
                 </div>
             </lightning-layout-item>
-
-            <lightning-layout-item size="8">
-                <lightning-input-address address-label="Address" city={addressInfo.city} city-label="City"
-                    country-label="Country" country={addressInfo.country} street={addressInfo.street}
-                    street-label="Street" province-label="Province/State" province={addressInfo.state}
-                    postal-code-label="Postal Code" postal-code={addressInfo.zip} onchange={handleChangeAddress}>
-                </lightning-input-address>
-            </lightning-layout-item>
         </lightning-layout>
-
-
-
-        <!-- <template if:true={addressIsGeocode}>
-            <lightning-input type="number" name="longitude" label="Longitude" value={addressInfoGeocode.lng}>
-            </lightning-input>
-            <lightning-input type="number" name="latitude" label="Latitude" value={addressInfoGeocode.lat}>
-            </lightning-input>
-        </template> -->
-
-
-       
-        <lightning-layout-item>
-            <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
-        </lightning-layout-item>
-
-
-
+        <div style="height: 100%;"></div>
+        <lightning-input-address address-label="Address" city={addressInfo.city} city-label="City"
+            country-label="Country" country={addressInfo.country} street={addressInfo.street} street-label="Street"
+            province-label="Province/State" province={addressInfo.state} postal-code-label="Postal Code"
+            postal-code={addressInfo.zip} onchange={handleChangeAddress}>
+        </lightning-input-address>
+        <lightning-card>
+            <lightning-layout-item>
+                <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
+            </lightning-layout-item>
+        </lightning-card>
     </lightning-card>
-
-
+    </div>
+    <!--  TODO : @Arinze resize the lightning layout items using the size property !!!!  -->
 </template>
