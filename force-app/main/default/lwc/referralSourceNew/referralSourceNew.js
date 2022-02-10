@@ -1,34 +1,21 @@
 // This file is contains the necessary code to communicate with the referralSourceNew HTML file
-
 import { LightningElement, api, track } from 'lwc';
+
 import Name from '@salesforce/schema/Referral_Source__c.Name'
-import NUMBEROFREFERRALS from '@salesforce/schema/Referral_Source__c.Number_of_Referrals_Total__c'
-import TOTALEXPENSES from '@salesforce/schema/Referral_Source__c.Total_Expenses__c'
-import CONTACTPERSON from '@salesforce/schema/Referral_Source__c.Contact_Person__c'
-import NUMBEROFACTIVITIESLAST30DAYS from '@salesforce/schema/Referral_Source__c.Number_of_Activities_Last_30_days__c'
-import DATEOFMOSTRECENTREFERRAL from '@salesforce/schema/Referral_Source__c.Date_of_Most_Recent_Referral__c'
-import CONTACTPERSONPHONE from '@salesforce/schema/Referral_Source__c.Contact_Person_Phone__c'
-import CONTACTPERSONFAXNUMBER from '@salesforce/schema/Referral_Source__c.Contact_Person_Fax_Number__c'
-import CONTACTPERSONEMAIL from '@salesforce/schema/Referral_Source__c.Contact_Person_Email__c'
 import OWNERSHIP from '@salesforce/schema/Referral_Source__c.Ownership__c'
-import MARKETERSFROMREFERRALS from '@salesforce/schema/Referral_Source__c.Marketers_from_Referrals__c'
 import getAutoComplete from '@salesforce/apex/MapCallout.getAutoComplete'
+import createNewReferralSource from '@salesforce/apex/ReferralSourceWizardController.createNewReferralSource'
 
 export default class ReferralSourceNew extends LightningElement {
     //assigning required fields 
 
+    referralSourceInfo = {
+        referralSourceName: Name,
+        Ownership: OWNERSHIP
 
-    referralSourceName = Name
-    Number_of_Referrals_Total__c = NUMBEROFREFERRALS
-    Total_Expenses__c = TOTALEXPENSES
-    Contact_Person__c = CONTACTPERSON
-    Number_of_Activities_Last_30_days__c = NUMBEROFACTIVITIESLAST30DAYS
-    Date_of_Most_Recent_Referral__c = DATEOFMOSTRECENTREFERRAL
-    Contact_Person_Phone__c = CONTACTPERSONPHONE
-    Contact_Person_Fax_Number__c = CONTACTPERSONFAXNUMBER
-    Contact_Person_Email__c = CONTACTPERSONEMAIL
-    Ownership__c = OWNERSHIP
-    Marketers_from_Referrals__c = MARKETERSFROMREFERRALS
+    }
+
+
     value = "--None--"
     addressSearchInput = "";
     addressIsGeocode = false;
@@ -36,20 +23,20 @@ export default class ReferralSourceNew extends LightningElement {
     @track
     addressPredictions = [];
 
+
+
+
     get displayPredictions() {
         return this.addressPredictions.length > 0;
     }
-    get options(){
+    get options() {
         return [
             { label: '--None--', value: '--None--' },
             { label: 'Public', value: 'Public' },
             { label: 'Private', value: 'Private' },
-            { label: 'Subsidiary', value: 'Subsidiary'},
-            { label: 'Other', value: 'Other'},
+            { label: 'Subsidiary', value: 'Subsidiary' },
+            { label: 'Other', value: 'Other' },
         ];
-    }
-    handleChange(event) {
-        this.value = event.detail.value;
     }
 
 
@@ -59,8 +46,7 @@ export default class ReferralSourceNew extends LightningElement {
         country: "USA",
         city: "",
         street: "",
-        state: "",
-        zip: ""
+        state: ""
     }
 
     @track
@@ -152,14 +138,24 @@ export default class ReferralSourceNew extends LightningElement {
         //this.addressIsGeocode = true;
 
     }
+    handleChange(event) {
+        this.referralSourceInfo[event.target.name] = event.detail.value
+    }
+
     refreshComponent(event) {
         eval("$A.get('e.force:refreshView').fire();");
     }
-    handleRecordSave() {
-        this.template.querySelectorAll('lightning-input')
-    }
-    saveComponent(event) {
-        this.handleRecordSave()
+
+    handleSave() {
+        let referralData = {
+
+            street : this.addressInfo.street,
+            city : this.addressInfo.city,
+            country : this.addressInfo.country,
+            province : this.addressInfo.state,
+            ownership : this.referralSourceInfo.Ownership,
+            name : this.referralSourceInfo.referralSourceName
+        }
     }
 
 }
