@@ -18,6 +18,7 @@ public class ReferralSourceModel {
 
 
     public  static Referral_Source__c ToReferralSourceRecord(ReferralSourceModel source){
+    
         return new Referral_Source__c(
                                         Name=source.name , 
                                         Ownership__c = source.ownership, 
@@ -29,7 +30,7 @@ public class ReferralSourceModel {
 
 
     public ReferralSourceModel FromReferralSourceRecord(){
-        throw new Unimplementedxception('method not implented');
+        throw new UnimplementedException('method not implented');
     }
 
 

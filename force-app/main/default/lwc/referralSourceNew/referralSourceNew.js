@@ -1,6 +1,6 @@
 // This file is contains the necessary code to communicate with the referralSourceNew HTML file
 import { LightningElement, api, track } from 'lwc';
-
+import {ShowToastEvent} from 'lightning/platformShowToastEvent'
 import Name from '@salesforce/schema/Referral_Source__c.Name'
 import OWNERSHIP from '@salesforce/schema/Referral_Source__c.Ownership__c'
 import getAutoComplete from '@salesforce/apex/MapCallout.getAutoComplete'
@@ -15,6 +15,22 @@ export default class ReferralSourceNew extends LightningElement {
 
     }
 
+    showError(){
+        const evt = new ShowToastEvent({
+            title : 'Error',
+            message : 'Please verify your input and try again😣',
+            variant : 'error'
+        });
+        this.dispatchEvent(evt)
+    }
+    showSuccess(){
+        const evt = new ShowToastEvent({
+            title : 'Success',
+            message : 'Record created successfully😃',
+            variant : 'success'
+        });
+        this.dispatchEvent(evt)
+    }
 
     value = "--None--"
     addressSearchInput = "";
@@ -160,14 +176,18 @@ export default class ReferralSourceNew extends LightningElement {
         createNewReferralSource({ dataInput: referralData })
             .then(res => {
                 if(res === true){
+                    this.showSuccess()
+                    this.refreshComponent()
                     // publish a lightning message toast to show success
                     // clear all values in the form  or redirect to referral source page
                 }else{
                      // publish a lightning message toast to show failure
+                     this.showError()
                 }
                 
             }).catch(error => {
                 // publish a lightning message toast to show failure
+                this.showError()
         })
     }
 
