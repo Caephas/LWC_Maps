@@ -29,7 +29,7 @@ export default class ReferralSourceNew extends LightningElement {
     Contact_Person_Email__c = CONTACTPERSONEMAIL
     Ownership__c = OWNERSHIP
     Marketers_from_Referrals__c = MARKETERSFROMREFERRALS
-
+    value = "--None--"
     addressSearchInput = "";
     addressIsGeocode = false;
 
@@ -39,12 +39,24 @@ export default class ReferralSourceNew extends LightningElement {
     get displayPredictions() {
         return this.addressPredictions.length > 0;
     }
+    get options(){
+        return [
+            { label: '--None--', value: '--None--' },
+            { label: 'Public', value: 'Public' },
+            { label: 'Private', value: 'Private' },
+            { label: 'Subsidiary', value: 'Subsidiary'},
+            { label: 'Other', value: 'Other'},
+        ];
+    }
+    handleChange(event) {
+        this.value = event.detail.value;
+    }
 
 
 
     @track
     addressInfo = {
-        country: "",
+        country: "USA",
         city: "",
         street: "",
         state: "",
@@ -131,15 +143,23 @@ export default class ReferralSourceNew extends LightningElement {
         console.log('selected address =>', address);
         let splitAddresses = address.split(',');
         console.log(splitAddresses);
-        this.addressInfo.street =splitAddresses[0].trim();
+        this.addressInfo.street = splitAddresses[0].trim();
         this.addressInfo.city = splitAddresses[1].trim();
         this.addressInfo.state = splitAddresses[2].trim();
-        
+
         this.addressPredictions = [];
         this.addressSearchInput = "";
         //this.addressIsGeocode = true;
 
     }
-
+    refreshComponent(event) {
+        eval("$A.get('e.force:refreshView').fire();");
+    }
+    handleRecordSave() {
+        this.template.querySelectorAll('lightning-input')
+    }
+    saveComponent(event) {
+        this.handleRecordSave()
+    }
 
 }
