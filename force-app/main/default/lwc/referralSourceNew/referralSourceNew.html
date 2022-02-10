@@ -9,7 +9,7 @@
     <lightning-card>
         <lightning-layout multiple-rows="true">
             <lightning-layout-item size="4" padding="around-small">
-                <lightning-input label="Referral Source Name" type="text" required name="Name" value={Name}>
+                <lightning-input label="Referral Source Name" type="text" required name="referralSourceName" value={referralSourceInfo.referralSourceName} onchange={handleChange}>
                 </lightning-input>
             </lightning-layout-item>
         </lightning-layout>
@@ -22,7 +22,7 @@
     <lightning-card>
         <lightning-layout>
             <lightning-layout-item size="4" padding="around-small">
-                <lightning-combobox name="progress" label="Ownership" value={value} placeholder="--None--"
+                <lightning-combobox name="Ownership" label="Ownership" value={referralSourceInfo.Ownership} placeholder="--None--"
                     options={options} onchange={handleChange}>
                 </lightning-combobox>
             </lightning-layout-item>
@@ -108,7 +108,7 @@
         <div class="slds-align_absolute-center" style="height:5rem">
             <lightning-button-group>
                 <lightning-button label="Refresh" onclick={refreshComponent}></lightning-button>
-                <lightning-button label="Save" onclick={saveComponent} type="submit" variant="brand"></lightning-button>
+                <lightning-button label="Save" onclick={handleSave} type="submit" variant="brand"></lightning-button>
             </lightning-button-group>
         </div>
     </lightning-card>
