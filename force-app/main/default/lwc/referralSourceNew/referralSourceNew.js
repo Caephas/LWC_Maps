@@ -147,15 +147,28 @@ export default class ReferralSourceNew extends LightningElement {
     }
 
     handleSave() {
-        let referralData = {
+        const referralData = {
 
-            street : this.addressInfo.street,
-            city : this.addressInfo.city,
-            country : this.addressInfo.country,
-            province : this.addressInfo.state,
-            ownership : this.referralSourceInfo.Ownership,
-            name : this.referralSourceInfo.referralSourceName
+            street: this.addressInfo.street,
+            city: this.addressInfo.city,
+            country: this.addressInfo.country,
+            province: this.addressInfo.state,
+            ownership: this.referralSourceInfo.Ownership,
+            name: this.referralSourceInfo.referralSourceName
         }
+
+        createNewReferralSource({ dataInput: referralData })
+            .then(res => {
+                if(res === true){
+                    // publish a lightning message toast to show success
+                    // clear all values in the form  or redirect to referral source page
+                }else{
+                     // publish a lightning message toast to show failure
+                }
+                
+            }).catch(error => {
+                // publish a lightning message toast to show failure
+        })
     }
 
 }
