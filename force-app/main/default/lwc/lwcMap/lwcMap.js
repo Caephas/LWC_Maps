@@ -4,8 +4,8 @@ export default class LwcMap extends LightningElement {
 
     @api addressInformation;
 
-    //mapMarkers;
-    zoomLevel = 9
+    //mapMarkers; 
+    zoomLevel = 15
     listView = "visible";
 
     connectedCallback() {

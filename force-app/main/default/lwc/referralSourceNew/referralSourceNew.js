@@ -3,15 +3,19 @@ import { LightningElement, api, track } from 'lwc';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent'
 import Name from '@salesforce/schema/Referral_Source__c.Name'
 import OWNERSHIP from '@salesforce/schema/Referral_Source__c.Ownership__c'
+import PHONE from '@salesforce/schema/Referral_Source__c.Referral_Source_Phone__c'
 import getAutoComplete from '@salesforce/apex/MapCallout.getAutoComplete'
 import createNewReferralSource from '@salesforce/apex/ReferralSourceWizardController.createNewReferralSource'
 
 export default class ReferralSourceNew extends LightningElement {
+
+    @api horizontalAlign = 'space';
     //assigning required fields 
 
     referralSourceInfo = {
         referralSourceName: Name,
-        Ownership: OWNERSHIP
+        Ownership: OWNERSHIP,
+        Phone: PHONE
 
     }
 

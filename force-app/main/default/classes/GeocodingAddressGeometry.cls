@@ -10,7 +10,7 @@ public with sharing class GeocodingAddressGeometry {
 
     public class GeocodingAddressLocation{
         public double lng {get;set;}
-        public double lat {get;set;}
+        public double lat {get;set;} 
 
 
     }
