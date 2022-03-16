@@ -73,21 +73,49 @@ public class MapCallout {
             throw new AuraHandledException(e.getMessage());
         }
     }    
-    //detail for address (similar to get prediction) pass response to custom type
+    /**
+     * @description getPlaceIdDetails gets the description of a place given it's place id
+     * @param  input input : the place id
+     * @return       return details of the place_id from google
+     */ 
     @AuraEnabled(cacheable=true)
     public static PlaceIdPredictionResponse getPlaceIdDetails(String input){
         PlaceIdPredictionResponse placeResponse = new PlaceIdPredictionResponse();
+        
         string encodedInput = EncodingUtil.urlEncode(input, 'UTF-8');
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC6XvLeyFoXx--aNwexPJhQm9l8ZulhzVs&fields=formatted_address&place_id='+encodedInput);
+        request.setEndpoint('https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC6XvLeyFoXx--aNwexPJhQm9l8ZulhzVs&fields=address_components&place_id='+encodedInput);
         request.setMethod('GET');
         HttpResponse httpresponse = http.send(request);
 
         if (httpresponse.getStatusCode() == 200){
-            GoogleMapsPredictionResponse.PlaceDetailsResponse PlaceDetailsResponse = (GoogleMapsPredictionResponse.PlaceDetailsResponse)
-            JSON.deserialize(httpresponse.getBody(),
-            GoogleMapsPredictionResponse.PlaceDetailsResponse.class); 
-        }
+            GoogleMapsPredictionResponse.PlaceDetailsResponse parsedPlaceDetailsResponse = (GoogleMapsPredictionResponse.PlaceDetailsResponse)
+                                                                                        JSON.deserialize(httpresponse.getBody(),
+                                                                                        GoogleMapsPredictionResponse.PlaceDetailsResponse.class); 
+        
+            
+            switch on(parsedPlaceDetailsResponse.status){
+                when OK{
+                    placeResponse = PlaceIdPredictionResponse.ExtractInformationFromPlaceDetailResponse(parsedPlaceDetailsResponse.result);
+                    placeResponse.status = 'OK';
+                }
+                when INVALID_REQUEST{
+                    placeResponse.status = 'INVALID_REQUEST';
+                }
+                when OVER_QUERY_LIMIT{
+                    placeResponse.status = 'OVER_QUERY_LIMIT';
+                }
+                when REQUEST_DENIED{
+                    placeResponse.status = 'REQUEST_DENIED';
+                }
+                when UNKNOWN_ERROR{
+                    placeResponse.status = 'UNKNOWN_ERROR';
+                }
+                when ZERO_RESULTS{
+                    placeResponse.status = 'ZERO_RESULTS';
+                }
+            }
+                                                                                    }
 
         return placeResponse;
     }

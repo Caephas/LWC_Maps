@@ -1,10 +1,11 @@
 // This file is contains the necessary code to communicate with the referralSourceNew HTML file
 import { LightningElement, api, track } from 'lwc';
-import {ShowToastEvent} from 'lightning/platformShowToastEvent'
+import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 import Name from '@salesforce/schema/Referral_Source__c.Name'
 import OWNERSHIP from '@salesforce/schema/Referral_Source__c.Ownership__c'
 import PHONE from '@salesforce/schema/Referral_Source__c.Referral_Source_Phone__c'
 import getAutoComplete from '@salesforce/apex/MapCallout.getAutoComplete'
+import getPlaceIdDetails from '@salesforce/apex/MapCallout.getPlaceIdDetails';
 import createNewReferralSource from '@salesforce/apex/ReferralSourceWizardController.createNewReferralSource'
 
 export default class ReferralSourceNew extends LightningElement {
@@ -19,19 +20,19 @@ export default class ReferralSourceNew extends LightningElement {
 
     }
 
-    showError(){
+    showError() {
         const evt = new ShowToastEvent({
-            title : 'Error',
-            message : 'Please verify your input and try again😣',
-            variant : 'error'
+            title: 'Error',
+            message: 'Please verify your input and try again😣',
+            variant: 'error'
         });
         this.dispatchEvent(evt)
     }
-    showSuccess(){
+    showSuccess() {
         const evt = new ShowToastEvent({
-            title : 'Success',
-            message : 'Record created successfully😃',
-            variant : 'success'
+            title: 'Success',
+            message: 'Record created successfully😃',
+            variant: 'success'
         });
         this.dispatchEvent(evt)
     }
@@ -67,40 +68,10 @@ export default class ReferralSourceNew extends LightningElement {
         city: "",
         street: "",
         state: "",
-        postalCode: ""
+        zip: ""
     }
 
-    @track
-    addressInfoGeocode = {
-        lng: -55.722656,
-        lat: 9.855216
-    }
 
-    get mapAddressInfo() {
-        if (!this.addressIsGeocode) {
-            const info = { ...this.addressInfo };
-
-            return {
-                location: {
-                    City: info.country,
-                    Country: info.country,
-                    PostalCode: info.zip,
-                    State: info.state,
-                    Street: info.street,
-                }
-            }
-        } else {
-            const geocodeInfo = { ...this.addressInfoGeocode };
-            return {
-                location: {
-                    Latitude: geocodeInfo.lat,
-                    Longitude: geocodeInfo.lng
-                }
-            }
-        }
-
-
-    }
 
     // what does this do ?? 
     handleRecordSelected(event) {
@@ -118,6 +89,8 @@ export default class ReferralSourceNew extends LightningElement {
         this.addressInfo.street = street;
     }
 
+
+
     handleSearchAddress(event) {
         getAutoComplete({ input: event.detail.value })
             .then(res => {
@@ -127,6 +100,7 @@ export default class ReferralSourceNew extends LightningElement {
                     let index = 0;
                     let optionsMap = [];
                     for (let pred of addressPreds) {
+                        console.log(pred);
                         optionsMap = [...optionsMap, {
                             key: index,
                             label: pred.description,
@@ -146,18 +120,31 @@ export default class ReferralSourceNew extends LightningElement {
 
 
     handleChangePrediction(event) {
-        const address = event.currentTarget.dataset.value;
-        console.log('selected address =>', address);
-        let splitAddresses = address.split(',');
-        console.log(splitAddresses);
-        this.addressInfo.street = splitAddresses[0].trim();
-        this.addressInfo.city = splitAddresses[1].trim();
-        this.addressInfo.state = splitAddresses[2].trim();
-        //made a change here
-        //this.addressInfo.postalCode
-        this.addressPredictions = [];
-        this.addressSearchInput = "";
-        //this.addressIsGeocode = true;
+        const placeId = event.currentTarget.dataset.value;
+        console.log('selected placeId =>', placeId);
+        getPlaceIdDetails({ input: placeId }).then(res => {
+            const responseDetails = { ...res };
+            console.log(responseDetails);
+            if (responseDetails.status !== 'OK') {
+                // publish a message saying an error occured
+                console.log('An error occured from the backend !!!!')
+            } else {
+                let { city, street, state, zip } = responseDetails;
+                this.addressInfo.city = city;
+                this.addressInfo.state = state;
+                this.addressInfo.zip = zip;
+                this.addressInfo.street = street;
+                this.addressPredictions = [];
+                this.addressSearchInput = "";
+            }
+
+        }).catch(err => {
+            console.log(err)
+
+        })
+
+
+
 
     }
     handleChange(event) {
@@ -175,27 +162,27 @@ export default class ReferralSourceNew extends LightningElement {
             city: this.addressInfo.city,
             country: this.addressInfo.country,
             province: this.addressInfo.state,
-            postalCode : this.addressInfo.postalCode,
+            postalCode: this.addressInfo.postalCode,
             ownership: this.referralSourceInfo.Ownership,
             name: this.referralSourceInfo.referralSourceName
         }
 
         createNewReferralSource({ dataInput: referralData })
             .then(res => {
-                if(res === true){
+                if (res === true) {
                     this.showSuccess()
                     this.refreshComponent()
                     // publish a lightning message toast to show success
                     // clear all values in the form  or redirect to referral source page
-                }else{
-                     // publish a lightning message toast to show failure
-                     this.showError()
+                } else {
+                    // publish a lightning message toast to show failure
+                    this.showError()
                 }
-                
+
             }).catch(error => {
                 // publish a lightning message toast to show failure
                 this.showError()
-        })
+            })
     }
 
 }

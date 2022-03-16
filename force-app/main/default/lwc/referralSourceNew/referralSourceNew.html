@@ -82,18 +82,18 @@
             </lightning-layout-item>
         </lightning-layout>
         <lightning-layout horizontal-align="space">
-            <lightning-layout-item size="4">
+            <lightning-layout-item>
                 <lightning-input label="Province/State" value={addressInfo.state} class="slds-size_1-of-2">
                 </lightning-input>
             </lightning-layout-item>
-            <lightning-layout-item size="4">
+            <lightning-layout-item>
                 <lightning-input label="Country" value={addressInfo.country} class="slds-size_1-of-2"></lightning-input>
             </lightning-layout-item>
+            <lightning-layout-item>
+                <lightning-input label="Postal Code" value={addressInfo.zip}></lightning-input>
+            </lightning-layout-item>
         </lightning-layout>
-        <lightning-layout-item size="4">
-            <lightning-input label="Postal Code" value={addressInfo.postalCode}></lightning-input>
-        </lightning-layout-item>
-        <lightning-layout horizontal-align="center">
+        <lightning-layout horizontal-align="center" style="margin-top:10px">
             <lightning-layout-item size="4">
                 <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
             </lightning-layout-item>

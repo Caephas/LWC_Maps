@@ -13,6 +13,8 @@ public with sharing class GoogleMapsPredictionResponse {
     
     
     public enum PlacesAutocompleteStatus {OK,ZERO_RESULTS,INVALID_REQUEST,OVER_QUERY_LIMIT,REQUEST_DENIED,UNKNOWN_ERROR}
+    public enum PlaceDetailsStatus {OK,ZERO_RESULTS,INVALID_REQUEST,OVER_QUERY_LIMIT,REQUEST_DENIED,UNKNOWN_ERROR}
+   
     
     
     public class PlaceAutocompletePrediction{
@@ -125,7 +127,6 @@ public with sharing class GoogleMapsPredictionResponse {
         public String photo_reference {get;set;}
         public Integer width {get;set;}
     }
-    public enum PlaceDetailsStatus {OK,ZERO_RESULTS,INVALID_REQUEST,OVER_QUERY_LIMIT,REQUEST_DENIED,UNKNOWN_ERROR}
    
     public class PlaceDetailsResponse{
         public List<String> html_attributions {get;set;}
