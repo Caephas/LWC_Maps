@@ -66,7 +66,8 @@ export default class ReferralSourceNew extends LightningElement {
         country: "USA",
         city: "",
         street: "",
-        state: ""
+        state: "",
+        postalCode: ""
     }
 
     @track
@@ -128,8 +129,8 @@ export default class ReferralSourceNew extends LightningElement {
                     for (let pred of addressPreds) {
                         optionsMap = [...optionsMap, {
                             key: index,
-                            label: pred,
-                            value: pred
+                            label: pred.description,
+                            value: pred.place_id
                         }]
 
                         index += 1;
@@ -152,7 +153,8 @@ export default class ReferralSourceNew extends LightningElement {
         this.addressInfo.street = splitAddresses[0].trim();
         this.addressInfo.city = splitAddresses[1].trim();
         this.addressInfo.state = splitAddresses[2].trim();
-
+        //made a change here
+        //this.addressInfo.postalCode
         this.addressPredictions = [];
         this.addressSearchInput = "";
         //this.addressIsGeocode = true;
@@ -173,6 +175,7 @@ export default class ReferralSourceNew extends LightningElement {
             city: this.addressInfo.city,
             country: this.addressInfo.country,
             province: this.addressInfo.state,
+            postalCode : this.addressInfo.postalCode,
             ownership: this.referralSourceInfo.Ownership,
             name: this.referralSourceInfo.referralSourceName
         }

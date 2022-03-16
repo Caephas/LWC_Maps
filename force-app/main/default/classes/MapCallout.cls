@@ -28,7 +28,8 @@ public class MapCallout {
                         for(GoogleMapsPredictionResponse.PlaceAutocompletePrediction prediction : parsedResponse.predictions){
                             response.status = 1;
                             if(prediction.description.containsIgnoreCase('Usa')){
-                                response.predicted_addresses.add(prediction.description);
+                                //new custom type that takes prediction.description and place_id
+                                response.predicted_addresses.add(new LwcControllerAutoCompleteResponse.AddressProperties(prediction.description, prediction.place_id));
                             }
                         }
                     }
@@ -72,6 +73,23 @@ public class MapCallout {
             throw new AuraHandledException(e.getMessage());
         }
     }    
+    //detail for address (similar to get prediction) pass response to custom type
+    @AuraEnabled(cacheable=true)
+    public static PlaceIdPredictionResponse getPlaceIdDetails(String input){
+        PlaceIdPredictionResponse placeResponse = new PlaceIdPredictionResponse();
+        string encodedInput = EncodingUtil.urlEncode(input, 'UTF-8');
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC6XvLeyFoXx--aNwexPJhQm9l8ZulhzVs&fields=formatted_address&place_id='+encodedInput);
+        request.setMethod('GET');
+        HttpResponse httpresponse = http.send(request);
 
+        if (httpresponse.getStatusCode() == 200){
+            GoogleMapsPredictionResponse.PlaceDetailsResponse PlaceDetailsResponse = (GoogleMapsPredictionResponse.PlaceDetailsResponse)
+            JSON.deserialize(httpresponse.getBody(),
+            GoogleMapsPredictionResponse.PlaceDetailsResponse.class); 
+        }
+
+        return placeResponse;
+    }
 
 }
