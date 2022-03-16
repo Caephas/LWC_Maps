@@ -27,7 +27,7 @@ public class PlaceIdPredictionResponse{
 				else if(addressComp.types.contains('administrative_area_level_1')){
 					responseToReturn.state = addressComp.long_name;
 				}
-				else if(addressComp.types.contains('sublocality_level_1') || addressComp.types.contains('sublocality') ){
+				else if(addressComp.types.contains('locality')){
 					responseToReturn.city = addressComp.long_name;
 				}else{
 					if(addressComp.types.contains('street_number')){

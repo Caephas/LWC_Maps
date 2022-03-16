@@ -39,8 +39,7 @@ export default class ReferralSourceNew extends LightningElement {
 
     value = "--None--"
     addressSearchInput = "";
-    addressIsGeocode = false;
-
+   
     @track
     addressPredictions = [];
 
@@ -162,7 +161,7 @@ export default class ReferralSourceNew extends LightningElement {
             city: this.addressInfo.city,
             country: this.addressInfo.country,
             province: this.addressInfo.state,
-            postalCode: this.addressInfo.postalCode,
+            postalCode: this.addressInfo.zip,
             ownership: this.referralSourceInfo.Ownership,
             name: this.referralSourceInfo.referralSourceName
         }
