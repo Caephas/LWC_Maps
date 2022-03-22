@@ -2,7 +2,6 @@
 import { LightningElement, api, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 import Name from '@salesforce/schema/Referral_Source__c.Name'
-import OWNERSHIP from '@salesforce/schema/Referral_Source__c.Ownership__c'
 import PHONE from '@salesforce/schema/Referral_Source__c.Referral_Source_Phone__c'
 import getAutoComplete from '@salesforce/apex/MapCallout.getAutoComplete'
 import getPlaceIdDetails from '@salesforce/apex/MapCallout.getPlaceIdDetails';
@@ -15,7 +14,6 @@ export default class ReferralSourceNew extends LightningElement {
 
     referralSourceInfo = {
         referralSourceName: Name,
-        Ownership: OWNERSHIP,
         Phone: PHONE
 
     }
@@ -37,29 +35,16 @@ export default class ReferralSourceNew extends LightningElement {
         this.dispatchEvent(evt)
     }
 
-    value = "--None--"
+    // value = "--None--"
     addressSearchInput = "";
    
     @track
     addressPredictions = [];
 
-
-
-
     get displayPredictions() {
         return this.addressPredictions.length > 0;
     }
-    get options() {
-        return [
-            { label: '--None--', value: '--None--' },
-            { label: 'Public', value: 'Public' },
-            { label: 'Private', value: 'Private' },
-            { label: 'Subsidiary', value: 'Subsidiary' },
-            { label: 'Other', value: 'Other' },
-        ];
-    }
-
-
+  
 
     @track
     addressInfo = {
@@ -69,7 +54,17 @@ export default class ReferralSourceNew extends LightningElement {
         state: "",
         zip: ""
     }
-
+    get mapAddressInfo (){
+        return {
+            location: {
+                City: this.addressInfo.city,
+                Country: this.addressInfo.country,
+                PostalCode: this.addressInfo.zip,
+                State: this.addressInfo.state,
+                Street: this.addressInfo.street
+            }
+        }
+    }
 
 
     // what does this do ?? 
@@ -78,16 +73,7 @@ export default class ReferralSourceNew extends LightningElement {
 
     }
 
-    handleChangeAddress(event) {
-        const detail = { ...event.detail };
-        let { country, city, street, province, postalCode } = detail;
-        this.addressInfo.country = country;
-        this.addressInfo.city = city;
-        this.addressInfo.state = province;
-        this.addressInfo.zip = postalCode;
-        this.addressInfo.street = street;
-    }
-
+   
 
 
     handleSearchAddress(event) {
@@ -120,13 +106,10 @@ export default class ReferralSourceNew extends LightningElement {
 
     handleChangePrediction(event) {
         const placeId = event.currentTarget.dataset.value;
-        console.log('selected placeId =>', placeId);
         getPlaceIdDetails({ input: placeId }).then(res => {
             const responseDetails = { ...res };
-            console.log(responseDetails);
             if (responseDetails.status !== 'OK') {
                 // publish a message saying an error occured
-                console.log('An error occured from the backend !!!!')
             } else {
                 let { city, street, state, zip } = responseDetails;
                 this.addressInfo.city = city;
@@ -138,11 +121,8 @@ export default class ReferralSourceNew extends LightningElement {
             }
 
         }).catch(err => {
-            console.log(err)
 
         })
-
-
 
 
     }
@@ -162,8 +142,8 @@ export default class ReferralSourceNew extends LightningElement {
             country: this.addressInfo.country,
             province: this.addressInfo.state,
             postalCode: this.addressInfo.zip,
-            ownership: this.referralSourceInfo.Ownership,
-            name: this.referralSourceInfo.referralSourceName
+            name: this.referralSourceInfo.referralSourceName,
+            phoneNumber: this.referralSourceInfo.Phone
         }
 
         createNewReferralSource({ dataInput: referralData })

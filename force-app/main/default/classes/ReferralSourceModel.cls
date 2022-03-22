@@ -14,14 +14,14 @@ public class ReferralSourceModel {
     @AuraEnabled
     public String country{get;set;}
     @AuraEnabled
-    public String ownership{get;set;}
+    public String phone{get;set;}
 
 
     public  static Referral_Source__c ToReferralSourceRecord(ReferralSourceModel source){
     
         return new Referral_Source__c(
                                         Name=source.name , 
-                                        Ownership__c = source.ownership, 
+                                        Referral_Source_Phone__c = source.phone, 
                                         City__c = source.city, 
                                         Street__c = source.street,
                                         Country__c = source.country,

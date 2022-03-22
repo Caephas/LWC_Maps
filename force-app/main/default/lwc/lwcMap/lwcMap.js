@@ -14,7 +14,7 @@ export default class LwcMap extends LightningElement {
                 location: {
                     City: "",
                     Country: "",
-                    PostalCode: "",
+                    PostalCode: "", 
                     State: "",
                     Street: "",
                 }

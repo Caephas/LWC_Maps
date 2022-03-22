@@ -11,7 +11,7 @@ public class PlaceIdPredictionResponse{
 	public string state {get;set;}
 	@auraEnabled
 	public string zip {get;set;}
-	
+	 
 
 
 	public static PlaceIdPredictionResponse ExtractInformationFromPlaceDetailResponse(GoogleMapsPredictionResponse.Place place){
@@ -21,9 +21,7 @@ public class PlaceIdPredictionResponse{
 				if(addressComp.types.contains('postal_code')){
 					responseToReturn.zip = addressComp.long_name;
 				}
-				// else if(addressComp.types.contains('country')){
-				// 	responseToReturn.country = addressComp.short_name;
-				// }
+				
 				else if(addressComp.types.contains('administrative_area_level_1')){
 					responseToReturn.state = addressComp.long_name;
 				}

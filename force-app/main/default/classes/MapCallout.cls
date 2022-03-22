@@ -93,7 +93,7 @@ public class MapCallout {
                                                                                         JSON.deserialize(httpresponse.getBody(),
                                                                                         GoogleMapsPredictionResponse.PlaceDetailsResponse.class); 
         
-            
+             
             switch on(parsedPlaceDetailsResponse.status){
                 when OK{
                     placeResponse = PlaceIdPredictionResponse.ExtractInformationFromPlaceDetailResponse(parsedPlaceDetailsResponse.result);

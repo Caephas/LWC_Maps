@@ -1,5 +1,5 @@
 public with sharing class GoogleMapsPredictions {
-   String predictions;
-   String [] matched_substrings = new List<String>();
+   public String predictions;
+  public String [] matched_substrings = new List<String>();
    
-}
+} 

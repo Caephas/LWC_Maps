@@ -65,34 +65,31 @@
                 </div>
             </lightning-layout-item>
         </lightning-layout>
-        <!-- <div style="height: 100%;"></div> -->
-        <!-- <lightning-layout multiple-rows="true" horizontal-align={horizontalAlign}>
-            <lightning-layout-item size="4" flexibility="auto" padding="around-small">
-                <lightning-input label="Street" value={addressInfo.street}></lightning-input>
-            </lightning-layout-item>
-            <lightning-layout-item size="4" flexibility="auto" padding="around-small">
-                <lightning-input label="City" value={addressInfo.city}></lightning-input>
-            </lightning-layout-item> -->
-        <lightning-layout horizontal-align="space">
-            <lightning-layout-item size="4">
+    </lightning-card>
+    <lightning-card>
+
+        <lightning-layout>
+            <lightning-layout-item size="6">
                 <lightning-input label="Street" value={addressInfo.street} class="slds-size_2-of-2"></lightning-input>
             </lightning-layout-item>
-            <lightning-layout-item size="4">
+            <lightning-layout-item size="6">
                 <lightning-input label="City" value={addressInfo.city} class="slds-size_1-of-2"></lightning-input>
             </lightning-layout-item>
         </lightning-layout>
-        <lightning-layout horizontal-align="space">
-            <lightning-layout-item>
+        <lightning-layout>
+            <lightning-layout-item size="4">
                 <lightning-input label="Province/State" value={addressInfo.state} class="slds-size_1-of-2">
                 </lightning-input>
             </lightning-layout-item>
-            <lightning-layout-item>
+            <lightning-layout-item size="4">
                 <lightning-input label="Country" value={addressInfo.country} class="slds-size_1-of-2"></lightning-input>
             </lightning-layout-item>
-            <lightning-layout-item>
+            <lightning-layout-item size="4">
                 <lightning-input label="Postal Code" value={addressInfo.zip}></lightning-input>
             </lightning-layout-item>
         </lightning-layout>
+
+
         <lightning-layout horizontal-align="center" style="margin-top:10px">
             <lightning-layout-item size="4">
                 <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
@@ -100,21 +97,9 @@
         </lightning-layout>
 
 
-        <!-- <lightning-layout-item size="4">
-                <lightning-input label="Province/State" value={addressInfo.state}></lightning-input>
-
-            </lightning-layout-item>
-            <lightning-layout-item size="4">
-                <lightning-input label="Country" value={addressInfo.country}></lightning-input>
-            </lightning-layout-item>
-            <lightning-layout-item size="4">
-                <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
-            </lightning-layout-item> -->
-        <!-- <div style="height: 75%; width: 75%;">
-                
-            </div> -->
-        <!-- </lightning-layout> -->
     </lightning-card>
+
+    <!-- lightning button -->
     <lightning-card>
         <div class="slds-align_absolute-center" style="height:5rem">
             <lightning-button-group>
