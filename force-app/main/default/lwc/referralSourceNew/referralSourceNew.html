@@ -1,0 +1,117 @@
+<!-- This file contains all the necessary code  required to 
+            create a new Referral source frontend -->
+
+
+<template>
+    <h3 class="slds-section__title slds-theme_info" style="background-color:DodgerBlue;">
+        <span class="slds-truncate slds-var-p-horizontal_small" title="Section Title">Information</span>
+    </h3>
+    <lightning-card>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input label="Referral Source Name" type="text" required name="referralSourceName"
+                    value={referralSourceInfo.referralSourceName} onchange={handleChange}>
+                </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="4" padding="around-small">
+                <lightning-input type="tel" label="Phone" name="phone" placeholder="Enter phone"
+                    value={referralSourceInfo.phone} onchange={handleChange}></lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+    <h3 class="slds-section__title slds-theme_info" style="background-color:DodgerBlue;">
+        <span class="slds-truncate slds-var-p-horizontal_small" title="Section Title">Address Information</span>
+    </h3>
+    <lightning-card>
+        <lightning-input label="Address Search" placeholder="Search Address" value={addressSearchInput}
+            onchange={handleSearchAddress}>
+        </lightning-input>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="4" flexibility="auto">
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                        <div class="slds-combobox_container">
+                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
+                                aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                                    role="none">
+                                </div>
+                                <template if:true={displayPredictions}>
+                                    <div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_large"
+                                        role="listbox">
+                                        <div id="main_navigation">
+                                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                                <template for:each={addressPredictions} for:item="result">
+                                                    <li key={result.key} role="presentation" class="slds-listbox__item"
+                                                        data-value={result.value} onclick={handleChangePrediction}>
+                                                        <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                            role="option">
+                                                            <span
+                                                                class="slds-media__figure slds-listbox__option-icon"></span>
+                                                            <span class="slds-media__body">
+                                                                <span class="slds-truncate"
+                                                                    title="Groups">{result.label}</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+    <lightning-card>
+        <div class="slds-box slds-p-around_none slds-var-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+            <lightning-layout>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <lightning-input disabled label="Street" value={addressInfo.street} class="slds-size_2-of-2">
+                    </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <lightning-input disabled label="City" value={addressInfo.city} class="slds-size_2-of-2">
+                    </lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <div class="slds-box slds-p-around_none slds-var-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+            <lightning-layout>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <lightning-input disabled label="Postal Code" value={addressInfo.zip} class="slds-size_2-of-2">
+                    </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <lightning-input disabled label="Country" value={addressInfo.country} class="slds-size_2-of-2">
+                    </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <lightning-input disabled label="Province/State" value={addressInfo.state} class="slds-size_2-of-2">
+                    </lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </lightning-card>
+    <lightning-card>
+
+        <lightning-layout horizontal-align="center" style="margin-top:10px">
+            <lightning-layout-item size="4">
+                <c-lwc-map address-information={mapAddressInfo}></c-lwc-map>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+
+    <!-- lightning button -->
+    <lightning-card>
+        <div class="slds-align_absolute-center" style="height:5rem">
+            <lightning-button-group>
+                <lightning-button label="Refresh" onclick={refreshComponent}></lightning-button>
+                <lightning-button label="Save" onclick={handleSave} type="submit" variant="brand"></lightning-button>
+            </lightning-button-group>
+        </div>
+    </lightning-card>
+</template>

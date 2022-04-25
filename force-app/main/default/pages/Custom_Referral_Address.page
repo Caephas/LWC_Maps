@@ -1,0 +1,157 @@
+<apex:page standardController="Referral_Source__c" lightningStylesheets="true">
+
+    <head>
+
+        <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyC6XvLeyFoXx--aNwexPJhQm9l8ZulhzVs&libraries=places&v=weekly"></script>
+        <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxecPR8P_uXL16m127Sp7W9kHfPaILuZ8&amp;callback=initMap&amp;libraries=places&amp;v=weekly" async="async" ></script> -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var myOptions = { zoom: 11, mapTypeId: google.maps.MapTypeId.ROADMAP, mapTypeControl: false };
+                var map;
+                var marker;
+                var options;
+                var geocoder = new google.maps.Geocoder();
+                var address = "{!Referral_Source__c.Street__c},{!Referral_Source__c.City__c}, {!Referral_Source__c.Province_State__c}, {!Referral_Source__c.Zip_Postal_Code__c}";
+                var infowindow = new google.maps.InfoWindow({
+                    content: "<b>{!Referral_Source__c.Name}</b><br>{!Referral_Source__c.Street__c}</br><br>{!Referral_Source__c.City__c}</br><br>{Referral_Source__c.Province_State__c}</br><br>{!Referral_Source__c.Zip_Postal_Code__c}</br>"
+                });
+
+
+                geocoder.geocode({ address: address }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK && results.length) {
+                        if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
+
+                            //create map
+                            map = new google.maps.Map(document.getElementById("map"), myOptions);
+                            //center map
+                            map.setCenter(results[0].geometry.location);
+
+                            //create marker
+                            marker = new google.maps.Marker({
+                                position: results[0].geometry.location,
+                                map: map,
+                                title: "{!Referral_Source__c.Name}"
+                            });
+
+                            //add listeners
+                            google.maps.event.addListener(marker, 'click', function () {
+                                infowindow.open(map, marker);
+                            });
+                            google.maps.event.addListener(infowindow, 'closeclick', function () {
+                                map.setCenter(marker.getPosition());
+                            });
+                        }
+                    } else {
+                        $('#map').css({ 'height': '15px' });
+                        $('#map').html("Oops! {!Referral_Source__c.Name}'s address could not be found, please make sure the address is correct.");
+                        resizeIframe();
+                    }
+                });
+
+                function resizeIframe() {
+                    var me = window.name;
+                    if (me) {
+                        var iframes = parent.document.getElementsByName(me);
+                        if (iframes && iframes.length == 1) {
+                            height = document.body.offsetHeight;
+                            iframes[0].style.height = height + "px";
+                        }
+                    }
+                }
+
+
+                const input = document.getElementById("address-input");
+                options = {
+                    componentRestrictions: { country: "us" },
+                    fields: ["formatted_address", "geometry", "name"],
+                    origin: map ? map.getCenter() : null,
+                    strictBounds: false,
+                    // types: ["establishment"],
+                };
+                const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+                autocomplete.addListener("place_changed", () => {
+                    infowindow.close();
+                    marker.setVisible(false);
+                    const place = autocomplete.getPlace();
+
+                    if (!place.geometry || !place.geometry.location) {
+                        // User entered the name of a Place that was not suggested and
+                        // pressed the Enter key, or the Place Details request failed.
+                        window.alert("No details available for input: '" + place.name + "'");
+                        return;
+                    }
+
+                    // If the place has a geometry, then present it on a map.
+                    if (place.geometry.viewport) {
+                        map.fitBounds(place.geometry.viewport);
+                    } else {
+                        map.setCenter(place.geometry.location);
+                        map.setZoom(11);
+                    }
+                    marker.setPosition(place.geometry.location);
+                    marker.setVisible(true);
+                    console.log(place.formatted_address);
+                    console.log(place);
+                    var placeAddress = place.formatted_address;
+                    const addressComponents = placeAddress.split(",");
+                    document.getElementById("j_id0:j_id2:j_id3:j_id6:placeStreetAddress").value = addressComponents[0];
+                    document.getElementById("j_id0:j_id2:j_id3:j_id6:placeCity").value = addressComponents[1];
+                    document.getElementById("j_id0:j_id2:j_id3:j_id6:placeState").value = addressComponents[2].trim().split(" ")[0];
+                    document.getElementById("j_id0:j_id2:j_id3:j_id6:placeZip").value = addressComponents[2].trim().split(" ")[1]
+                    //console.log(addressComponents[2].trim().split(" "));
+                    // infowindowContent.children["place-name"].textContent = place.name;
+                    // infowindowContent.children["place-address"].textContent =
+                    //   place.formatted_address;
+                    // infowindow.open(map, marker);
+                });
+            });
+
+
+            function enableFieldsThenSave() {
+                document.getElementById("j_id0:j_id2:j_id3:j_id6:placeStreetAddress").removeAttribute("disabled");
+                document.getElementById("j_id0:j_id2:j_id3:j_id6:placeCity").removeAttribute("disabled");
+                document.getElementById("j_id0:j_id2:j_id3:j_id6:placeState").removeAttribute("disabled");
+                document.getElementById("j_id0:j_id2:j_id3:j_id6:placeZip").removeAttribute("disabled");
+                // console.log("here")
+                SaveRecord();
+            }
+        </script>
+        <style>
+            #map {
+                font-family: Arial;
+                font-size: 12px;
+                line-height: normal !important;
+                height: 250px;
+                background: transparent;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- <div style="height:400px;"> -->
+        <apex:form>
+            <apex:pageBlock title="Address">
+                <input style="width:50%;" id="address-input" type="text" placeholder="Enter a location" />
+                <!-- <apex:inputField style="width:40%;" id="placeApt" value="{!Referral_Source__c.APT_Suite__c}" /> -->
+                <p/>
+                <p/>
+                <apex:pageBlockSection title="Address Details">
+                    <apex:inputField id="placeStreetAddress" value="{!Referral_Source__c.Street__c}" html-disabled="true" />
+                    <apex:inputField id="placeCity" value="{!Referral_Source__c.City__c}" html-disabled="true" />
+                    <apex:inputField id="placeState" value="{!Referral_Source__c.Province_State__c}" html-disabled="true" />
+                    <apex:inputField id="placeZip" value="{!Referral_Source__c.Zip_Postal_Code__c	}" html-disabled="true" />
+                    <p/>
+
+
+                    <apex:commandButton onclick="enableFieldsThenSave()" value="Save" />
+                </apex:pageBlockSection>
+
+            </apex:pageBlock>
+            <apex:actionfunction name="SaveRecord" action="{!save}" rerender="none" />
+        </apex:form>
+        <div id="map"></div>
+        <!-- </div> -->
+    </body>
+</apex:page>
